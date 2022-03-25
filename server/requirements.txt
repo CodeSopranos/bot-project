@@ -1,0 +1,5 @@
+fastapi==0.62.0
+uvicorn
+httpx
+python-telegram-bot==12.7
+requests==2.22.0
