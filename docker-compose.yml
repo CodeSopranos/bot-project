@@ -6,5 +6,12 @@ services:
      - "8000:8000"
     env_file:
       - .env.local
+  tg-bot:
+    build: services/tg-bot
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env.local
     volumes:
       - ./server:/usr/src/app/
+      - ./services/tg-bot:/usr/src/tg-bot/
