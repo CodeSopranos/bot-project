@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 .idea
-*/audio/*
+services/tg-bot/audio/*
 .env.local
 __pycache__/
 *.py[cod]
