@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 .idea
+*/audio/*
 .env.local
 __pycache__/
 *.py[cod]
