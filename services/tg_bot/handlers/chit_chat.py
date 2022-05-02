@@ -1,8 +1,13 @@
 from aiogram import md, types
 from aiogram.types import ContentType
 
-from handlers.base import dp, DialogState
+from handlers.base import bot, dp, DialogState
 from handlers.keyboards import get_offer_start_keyboard
+
+
+@dp.message_handler(commands=['play'], state='*')
+async def process_play_command(message: types.Message):
+    await bot.send_dice(emoji='🏀', chat_id=message.chat.id)
 
 
 @dp.message_handler(content_types=ContentType.TEXT, state='*')
