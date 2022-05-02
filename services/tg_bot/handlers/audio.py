@@ -74,8 +74,3 @@ async def process_offer_callback(callback_query: types.CallbackQuery):
         await process_accent_command(callback_query.message)
     else:
         await bot.send_message(callback_query.from_user.id, f"You say {code} I say OK 😐")
-
-
-        # _command = "\links"
-        # await bot.send_message(callback_query.from_user.id, f"Alright\! Type {_command} if you want to get useful materials")
-        # await DialogState.finish.set()
