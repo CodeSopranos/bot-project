@@ -14,4 +14,4 @@ COPY . /usr/src/tg-bot/
 
 EXPOSE 8081
 
-CMD ["python", "main.py"]
+CMD ["python", "run.py"]
