@@ -13,7 +13,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 logging.basicConfig(level=logging.INFO)
 TG_TOKEN = os.getenv("TG_TOKEN", None)  # Telegram Bot API Key
 
-bot = Bot(token=TG_TOKEN, parse_mode=types.ParseMode.MARKDOWN_V2)
+bot = Bot(token=TG_TOKEN, parse_mode=None) #types.ParseMode.MARKDOWN_V2)
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(LoggingMiddleware())
 

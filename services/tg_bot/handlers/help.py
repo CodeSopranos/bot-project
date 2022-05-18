@@ -9,9 +9,10 @@ async def process_start_command(message: types.Message):
                                  md.text(f"It is", md.underline(f"{(await bot.me).first_name}")),
                                  md.text(md.italic("\nPowered by "),
                                          md.link("aiogram", "https://docs.aiogram.dev/en/latest/index.html")),
-                                 sep="\n"))
+                                 sep="\n"), parse_mode=types.ParseMode.MARKDOWN_V2)
     await message.answer(md.text("🦋"))
-    await message.answer(md.italic("NB: you can type {command} to see all actions".format(command="/help")))
+    await message.answer(md.italic("NB: you can type {command} to see all actions".format(command="/help")),
+                         parse_mode=types.ParseMode.MARKDOWN_V2)
 
 
 @dp.message_handler(commands=['help'], state='*')
@@ -21,4 +22,4 @@ async def process_help_command(message: types.Message):
                                 md.text("🔸 {command} : Get this message".format(command="/help")),
                                 md.text("🔸 {command} : Test your accent 🔥".format(command="/accent")),
                                 md.text("🔸 {command} : Useful links".format(command="/links")),
-                                sep="\n"))
+                                sep="\n"),  parse_mode=types.ParseMode.MARKDOWN_V2)

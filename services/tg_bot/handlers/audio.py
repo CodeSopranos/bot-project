@@ -11,8 +11,8 @@ from handlers.keyboards import *
 async def process_accent_command(message: types.Message):
     await DialogState.start.set()
     await types.ChatActions.typing()
-    await message.answer(md.text("Let's try to score your english accent\!"))
-    await message.answer(md.text("Please, dictate following in a voice message:"))
+    await message.answer(md.text("Let's try to score your english accent\!"), parse_mode=types.ParseMode.MARKDOWN_V2)
+    await message.answer(md.text("Please, dictate following in a voice message:"), parse_mode=types.ParseMode.MARKDOWN_V2)
     await types.ChatActions.typing(sleep=0.8)
     response = requests.get("http://server:8000/api/get_sample/").json()
     await message.answer(md.text(response['sample']))
@@ -22,7 +22,7 @@ async def process_accent_command(message: types.Message):
 @dp.message_handler(lambda message: message.voice is None, state=DialogState.audio)
 async def process_audio_invalid(message: types.Message):
     return await message.reply(md.text("Please, send me a voice message",
-                                       md.escape_md('...'), sep=''))
+                                       md.escape_md('...'), sep=''), parse_mode=types.ParseMode.MARKDOWN_V2)
 
 
 @dp.message_handler(content_types=ContentType.VOICE, state=DialogState.audio)
@@ -32,7 +32,7 @@ async def process_audio(message: types.Voice):
     await bot.download_file(file.file_path, destination_dir='audio/')
     await message.answer(md.text(md.text(f"Great\! Your english accent analysis started"),
                                  md.escape_md("..."),
-                                 sep=''))
+                                 sep=''),  parse_mode=types.ParseMode.MARKDOWN_V2)
     await message.answer("🕐")
     response = requests.post("http://server:8000/api/predict/?audio=audio").json()
     await message.answer(f"Your score is {response['score']} points, heal yeah")
@@ -46,7 +46,7 @@ async def process_audio(message: types.Voice):
 async def process_offer_to_start_no(message: types.Message):
     await DialogState.finish()
     await types.ChatActions.typing()
-    await message.answer(md.text("Fine, next time\!"))
+    await message.answer(md.text("Fine, next time\!"), parse_mode=types.ParseMode.MARKDOWN_V2)
 
 
 @dp.message_handler(lambda message: message.text.lower() == 'yes', state=DialogState.offer_to_start)
