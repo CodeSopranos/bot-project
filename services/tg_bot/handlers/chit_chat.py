@@ -44,14 +44,14 @@ chit_chat = ChatBot('Small-Talker',
                         'chatterbot.logic.MathematicalEvaluation',
                     ]
                     )
-trainer = ChatterBotCorpusTrainer(chit_chat.storage)
-trainer.train(
-    "chatterbot.corpus.english.conversations",
-    "chatterbot.corpus.english.emotion",
-    "chatterbot.corpus.english.greetings",
-    "chatterbot.corpus.english.humor",
-    "chatterbot.corpus.english.movies",
-    "chatterbot.corpus.english.trivia",
-    "chatterbot.corpus.english.botprofile",
-    "chatterbot.corpus.english.ai",
-)
+# trainer = ChatterBotCorpusTrainer(chit_chat.storage)
+# trainer.train(
+#     "chatterbot.corpus.english.conversations",
+#     "chatterbot.corpus.english.emotion",
+    # "chatterbot.corpus.english.greetings",
+    # "chatterbot.corpus.english.humor",
+    # "chatterbot.corpus.english.movies",
+    # "chatterbot.corpus.english.trivia",
+    # "chatterbot.corpus.english.botprofile",
+    # "chatterbot.corpus.english.ai",
+# )
