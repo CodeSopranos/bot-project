@@ -42,10 +42,18 @@ class AccentModel:
         class_logits = self.model.run(None, ort_inputs)[0][0].tolist()
         class_probs = softmax(class_logits)
         result = {label: prob for label, prob in zip(self.class_names, class_probs)}
-        prettified = [self.template(i+1, item) for i, item in
+        score = self.get_score(result)
+        prettified = [self.template(i + 1, item) for i, item in
                       enumerate(sorted(result.items(), key=lambda x: x[1], reverse=True))]
         result['pretty_print'] = '\n\n'.join(prettified)
+        result['score'] = score
         return result
+
+    @staticmethod
+    def get_score(class2probs):
+        eng_impact = 0.7 * 100 * class2probs["English 🇬🇧"]
+        us_impact = 0.3 * 100 * class2probs["American 🇺🇸"]
+        return round(eng_impact + us_impact)
 
     @staticmethod
     def wav2fbank(filename):
