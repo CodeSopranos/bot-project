@@ -1,4 +1,6 @@
 # Byte-compiled / optimized / DLL files
+.DS_Store
+server/models
 .idea
 services/tg_bot/audio/*
 .env.local

@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3.8
 
 WORKDIR /usr/src/app
 
@@ -10,6 +10,8 @@ COPY ./requirements.txt  /usr/src/app/requirements.txt
 RUN pip install -r  /usr/src/app/requirements.txt
 
 COPY . /usr/src/app/
+# COPY ./utils /usr/src/app/utils/
+# COPY ./run.py /usr/src/app/run.py
 
 
 EXPOSE 8000

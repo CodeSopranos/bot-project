@@ -2,9 +2,9 @@ import os
 import httpx
 import uvicorn
 import numpy as np
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, File, UploadFile
 
-from utils.predict import dummy_model
+from utils.predict import dummy_model, accent_model
 
 app = FastAPI(title='The accent bot', description='English pronunciation scoring')
 
@@ -13,8 +13,8 @@ OWNER_CHAT_ID = os.getenv("OWNER_CHAT_ID", '<some-chat-id>')  # Telegram Chat ID
 
 
 @app.get("/ping/", tags=["Utils"])
-async def set_webhook():
-    return {"message": "PONG."}
+async def ping(request: Request = None):
+    return {"message": "PONG.", 'request': request.url.path}
 
 
 @app.post("/set_webhook/", tags=["Utils"])
@@ -44,13 +44,17 @@ async def denoise_audio(audio: str = 'audio'):
 
 
 @app.post("/api/audio/accent-recognition/", tags=["Audio"])
-async def denoise_audio(audio: str = 'audio'):
-    return {'status': "OK"}
+async def predict_accent(file: UploadFile = File(...)):
+    try:
+        result = accent_model.predict(file.file)
+    except Exception as e:
+        result = {'Error': str(e)}
+    return result
 
 
 @app.get("/api/get_sample/", tags=["Scoring"])
 async def get_sample():
-    sentence = dummy_model.get_sample()
+    sentence = accent_model.get_sample()
     return {'sample': sentence}
 
 
