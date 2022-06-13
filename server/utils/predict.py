@@ -69,8 +69,8 @@ class AccentModel:
     def wav2fbank(filename):
         waveform, sr = torchaudio.load(filename)
         waveform = waveform - waveform.mean()
-        fbank_full = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr,
-                                                       use_energy=False,
+        fbank_full = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True,
+                                                       sample_frequency=sr, use_energy=False,
                                                        window_type='hanning', num_mel_bins=128, dither=0.0,
                                                        frame_shift=10)
         fbank_full = fbank_full.cpu().numpy()
@@ -81,17 +81,22 @@ class AccentModel:
         for i in range(split_num):
             start = i * target_length
             end = start + target_length
+
             if end >= fbank_full.shape[0]:
                 end = fbank_full.shape[0]
+
             fbank = fbank_full[start:end, :]
             n_frames = fbank.shape[0]
             p = target_length - n_frames
+
             if p > 0:
                 fbank = np.pad(fbank, [(0, p), (0, 0)])
             elif p < 0:
                 fbank = fbank[0:target_length, :]
-            norm_mean = -5.893
-            norm_std = 4.15
+
+            fbank = np.transpose(fbank, (1, 0))
+            norm_mean = -5.719665
+            norm_std = 4.3323016
             fbank = (fbank - norm_mean) / (norm_std * 2)
             fbank = np.expand_dims(fbank, axis=0)
             fbanks.append(fbank)
