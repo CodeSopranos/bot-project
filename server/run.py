@@ -1,10 +1,13 @@
 import os
+import io
 import httpx
 import uvicorn
-import numpy as np
+from scipy.io import wavfile
+from tempfile import NamedTemporaryFile
 from fastapi import FastAPI, Request, File, UploadFile
+from fastapi.responses import FileResponse, StreamingResponse
 
-from utils.predict import dummy_model, accent_model
+from utils.model_loading import dummy_model, accent_model, denoiser_model
 
 app = FastAPI(title='The accent bot', description='English pronunciation scoring')
 
@@ -38,9 +41,12 @@ async def predict(audio: str = 'audio'):
     return {'score': score, 'most_relevant': most_relevant}
 
 
-@app.post("/api/audio/denoise/", tags=["Audio"])
-async def denoise_audio(audio: str = 'audio'):
-    return {'status': "OK"}
+@app.post("/api/audio/denoise/", tags=["Audio"], response_class=FileResponse)
+async def denoise_audio(file: UploadFile = File(...)):
+    with NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+        print(f.name)
+        data, fs = denoiser_model.denoise(file.file, outputfile_name=f.name)
+        return FileResponse(f.name, headers={"Accept-Ranges": "bytes"})
 
 
 @app.post("/api/audio/accent-recognition/", tags=["Audio"])
