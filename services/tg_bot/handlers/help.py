@@ -21,5 +21,6 @@ async def process_help_command(message: types.Message):
                                 md.text("🔸 {command} : Start conversation with bot".format(command="/start")),
                                 md.text("🔸 {command} : Get this message".format(command="/help")),
                                 md.text("🔸 {command} : Test your accent 🔥".format(command="/accent")),
+                                md.text("🔸 {command} : Denoise your voice message".format(command="/denoise")),
                                 md.text("🔸 {command} : Useful links".format(command="/links")),
                                 sep="\n"),  parse_mode=types.ParseMode.MARKDOWN_V2)

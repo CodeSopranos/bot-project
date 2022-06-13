@@ -2,14 +2,39 @@ import os
 import requests
 
 from aiogram import md, types
-from aiogram.types import ContentType
+from aiogram.types import ContentType, InputFile
 
 from handlers.base import bot, dp, DialogState
 from handlers.keyboards import *
 
 FILE_BASE = 'audio/'
+FILE_BASE_DENOISE = 'audio/denoise/'
 ACCENT_API = "http://server:8000/api/audio/accent-recognition/"
+DENOISE_API = "http://server:8000/api/audio/denoise/"
 DUMMY_API = "http://server:8000/api/predict/?audio=audio"
+
+
+@dp.message_handler(commands=['denoise'], state='*')
+async def process_denoise_command(message: types.Message):
+    await types.ChatActions.typing()
+    await message.answer(md.text("Please, send me some noisy voice audio..."))
+    await DialogState.denoise.set()
+
+
+@dp.message_handler(content_types=ContentType.VOICE, state=DialogState.denoise)
+async def denoise_audio(message: types.Voice):
+    await types.ChatActions.typing()
+    file = await bot.get_file(message.voice.file_id)
+    filename = file.file_path.replace('file', get_username(message))
+    filepath = os.path.join(FILE_BASE_DENOISE, filename)
+    await bot.download_file(file.file_path, destination=filepath)
+    await message.answer(md.text(f"Very fast! Denoising started..."))
+    await message.answer("🕐")
+    file = {'file': open(filepath, 'rb')}
+    response = requests.post(DENOISE_API, files=file)
+    open(filepath, "wb").write(response.content)
+    await message.answer(md.text(f"...And here is cleaned version!"))
+    await bot.send_audio(message.from_user.id, InputFile(filepath))
 
 
 @dp.message_handler(commands=['accent'], state='*')
@@ -35,8 +60,7 @@ async def process_audio_invalid(message: types.Message):
 async def process_audio(message: types.Voice):
     await types.ChatActions.typing()
     file = await bot.get_file(message.voice.file_id)
-    filename = file.file_path.replace('file', '_'.join([message.from_user.first_name,
-                                                        message.from_user.last_name]))
+    filename = file.file_path.replace('file', get_username(message))
     filepath = os.path.join(FILE_BASE, filename)
     await bot.download_file(file.file_path, destination=filepath)
     await message.answer(md.text(md.text(f"Great\! Your english accent analysis started"),
@@ -88,3 +112,9 @@ async def process_offer_callback(callback_query: types.CallbackQuery):
         await process_accent_command(callback_query.message)
     else:
         await bot.send_message(callback_query.from_user.id, f"You say {code} I say OK 😐")
+
+
+def get_username(message):
+    if message.from_user.username is None:
+        return str(message.from_user.id)
+    return message.from_user.username
