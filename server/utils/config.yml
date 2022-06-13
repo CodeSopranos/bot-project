@@ -1,0 +1,43 @@
+lang: 1
+id: US
+label: "American 🇺🇸"
+description: Amercan english accent descriptiion...
+benchmark: True
+weight: 0.35
+samples: sample.file
+---
+lang: 2
+id: BR
+label: "British 🇬🇧"
+description: British english accent descriptiion...
+benchmark: True
+weight: 0.65
+samples: sample.file
+---
+lang: 3
+id: IN
+label: "Indian 🇮🇳"
+description: Indian english accent descriptiion...
+benchmark: False
+samples: sample.file
+---
+lang: 4
+id: RU
+label: "Russian 🐻"
+description: Russian english accent descriptiion...
+benchmark: False
+samples: sample.file
+---
+lang: 5
+id: SC
+label: "Scottish 🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+description: Scottish english accent descriptiion...
+benchmark: False
+samples: sample.file
+---
+lang: 6
+id: SP
+label: "Spanish 🇪🇸"
+description: Spanish english accent descriptiion...
+benchmark: False
+samples: sample.file
