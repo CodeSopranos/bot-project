@@ -108,6 +108,3 @@ def speech_enhancement_wav(filename, interpreter_1, interpreter_2, outputfile_na
     print(np.mean(np.stack(time_array)) * 1000)
     print('Processing finished.')
     return out_file, fs
-
-# speech_enhancement_wav('../../services/tg_bot/audio/voice/valperovich_249.oga', interpreter_1, interpreter_2,
-#                        outputfile_name='denoised2.wav')
